@@ -58,7 +58,7 @@ public final class App {
         System.out.printf("Day with smallest temperature spread : %s%n", maxDay);
 
         String teamWithSmallestGoalSpread = "A good team"; // Your goal analysis function call …
-        System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
+      //  System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
     }
 
 }
