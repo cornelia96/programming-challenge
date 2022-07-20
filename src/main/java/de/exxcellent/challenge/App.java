@@ -18,8 +18,12 @@ public final class App {
     public static void main(String... args) throws FileNotFoundException {
 
         String weatherPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\weather.csv";
-        System.out.printf("Day with smallest temperature spread : %s%n", getMaxDay(weatherPath));
 
+        String dayWithSmallestTempSpread = getMaxDay(weatherPath);     // Your day analysis function call …
+        System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
+
+        String teamWithSmallestGoalSpread = "A good team"; // Your goal analysis function call …
+        System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
     }
 
     /** readCsvFile opens and reads a .csv-file at "path" and returns a scanner object */
