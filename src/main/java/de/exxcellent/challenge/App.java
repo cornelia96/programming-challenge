@@ -54,28 +54,6 @@ public final class App {
         return column;
     }
 
-    /** substractColumnsAminusB substracts the values of column B from the values
-     * of column A
-     */
-    public static List<Integer> substractColumnsAminusB(List<String> columnA, List<String> columnB) throws IllegalArgumentException{
-        List<Integer> ranges = new ArrayList<>();
-        try {
-            List<Integer> integerA = new ArrayList<>();
-            List<Integer> integerB = new ArrayList<>();
-            for (String s : columnA) {
-                integerA.add(Integer.parseInt(s));
-            }for (String s : columnB) {
-                integerB.add(Integer.parseInt(s));
-            }
-            for (int i=0; i<integerA.size(); i++) {
-                ranges.add(integerA.get(i) - integerB.get(i));
-            }
-        } catch (IllegalArgumentException e) {
-            e.getStackTrace();
-        }
-        return ranges;
-    }
-
     /** getMaxIndex returns the index of the biggest value in an integer array list
      */
     public static int getMaxIndex(List<Integer> column) {
@@ -90,35 +68,54 @@ public final class App {
         return column.indexOf(minRange);
     }
 
+    /** getSpreadOfTwoColumns calculates the spread between the two columns with the
+     * provided indices, returning an array list of type int
+     */
+    public static List<Integer> getSpreadOfTwoColumns(String path, int indexA, int indexB) throws FileNotFoundException {
+        Scanner sc = readCsvFile(path);
+        List<String> columnA = getColumn(sc, indexA);
+        sc = readCsvFile(path);
+        List<String> columnB = getColumn(sc, indexB);
+        sc.close();
+        List<Integer> ranges = new ArrayList<>();
+        List<Integer> integerA = new ArrayList<>();
+        List<Integer> integerB = new ArrayList<>();
+        try {
+            for (String s : columnA) {
+                integerA.add(Integer.parseInt(s));
+            }for (String s : columnB) {
+                integerB.add(Integer.parseInt(s));
+            }
+            for (int i=0; i<integerA.size(); i++) {
+                ranges.add(integerA.get(i) - integerB.get(i));
+            }
+        } catch (IllegalArgumentException e) {
+            e.getStackTrace();
+        }
+        List<Integer> absRanges = new ArrayList<>();
+        for (int value : ranges) {
+            absRanges.add(Math.abs(value));
+        }
+        return absRanges;
+    }
+
     /** getMaxDay returns the day with the largest temperature spread
      */
     public static String getMaxDay(String path) throws FileNotFoundException {
         Scanner sc = readCsvFile(path);
         List<String> infoColumn = getColumn(sc, 0);
-        sc = readCsvFile(path);
-        List<String> maxColumn = getColumn(sc, 1);
-        sc = readCsvFile(path);
-        List<String> minColumn = getColumn(sc, 2);
         sc.close();
-        List<Integer> ranges = substractColumnsAminusB(maxColumn, minColumn);
-        int maxDay = getMaxIndex(ranges);
+        int maxDay = getMaxIndex(getSpreadOfTwoColumns(path, 1, 2));
         return infoColumn.get(maxDay);
     }
 
+    /** getMaxDay returns the day with the largest temperature spread
+     */
     public static String getMinGoalTeam(String path) throws FileNotFoundException {
         Scanner sc = readCsvFile(path);
         List<String> infoColumn = getColumn(sc, 0);
-        sc = readCsvFile(path);
-        List<String> maxColumn = getColumn(sc, 6);
-        sc = readCsvFile(path);
-        List<String> minColumn = getColumn(sc, 5);
         sc.close();
-        List<Integer> ranges = substractColumnsAminusB(maxColumn, minColumn);
-        List<Integer> absRanges = new ArrayList<>();
-        for (int value : ranges) {
-            absRanges.add(Math.abs(value));
-        }
-        int minTeam = getMinIndex(absRanges);
+        int minTeam = getMinIndex(getSpreadOfTwoColumns(path, 5,6));
         return infoColumn.get(minTeam);
     }
 
