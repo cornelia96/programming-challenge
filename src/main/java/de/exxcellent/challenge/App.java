@@ -20,7 +20,6 @@ public final class App {
         String weatherPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\weather.csv";
         String footballPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\football.csv";
 
-
         String dayWithSmallestTempSpread = getMaxDay(weatherPath);     // Your day analysis function call …
         System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
 
@@ -39,8 +38,6 @@ public final class App {
 
     /** getColumn returns an arraylist of the type String
      * The contents of the array is the column with the specified index
-     * BUG: The scanner cannot be reset, so it has to be re-initialized
-     * with readCsvFile each time before getColumn is used
      */
     public static List<String> getColumn(Scanner sc, int index) {
         List<String> column = new ArrayList<>();
@@ -70,6 +67,9 @@ public final class App {
 
     /** getSpreadOfTwoColumns calculates the spread between the two columns with the
      * provided indices, returning an array list of type int
+     * BUG: The scanner cannot be reset, so it has to be re-initialized
+     * with readCsvFile each time before getColumn is used; path must be passed to
+     * the function
      */
     public static List<Integer> getSpreadOfTwoColumns(String path, int indexA, int indexB) throws FileNotFoundException {
         Scanner sc = readCsvFile(path);
