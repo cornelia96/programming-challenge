@@ -1,10 +1,7 @@
 package de.exxcellent.challenge;
 
 import java.io. *;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * The entry class for your solution. This class is only aimed as starting point and not intended as baseline for your software
@@ -20,11 +17,13 @@ public final class App {
      */
     public static void main(String... args) throws FileNotFoundException {
 
-        String path = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\weather.csv";
-        System.out.printf("Day with smallest temperature spread : %s%n", getMaxDay(path));
+        String weatherPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\weather.csv";
+        System.out.printf("Day with smallest temperature spread : %s%n", getMaxDay(weatherPath));
+
     }
 
-    public static Scanner readCsvFile(String path) throws FileNotFoundException {
+    /** readCsvFile opens and reads a .csv-file at "path" and returns a scanner object */
+     public static Scanner readCsvFile(String path) throws FileNotFoundException {
         try {
             return new Scanner(new File(path));
         } catch (FileNotFoundException e) {
@@ -32,43 +31,61 @@ public final class App {
         }
     }
 
-    public static List<Integer> getColumn(Scanner sc, int index) {
-        List<Integer> column = new ArrayList<>();
-        sc.useDelimiter("\n");
-        sc.next();
-        while (sc.hasNext()) {
-            int value = Integer.parseInt(sc.next().split(",")[index]);
+    /** getColumn returns an arraylist of the type String
+     * The contents of the array is the column with the specified index
+     * BUG: The scanner cannot be reset, so it has to be re-initialized
+     * with readCsvFile each time before getColumn is used
+     */
+    public static List<String> getColumn(Scanner sc, int index) {
+        List<String> column = new ArrayList<>();
+        Scanner scanner = sc.useDelimiter("\n");
+        scanner.next();
+        while (scanner.hasNext()) {
+            String value = scanner.next().split(",")[index];
             column.add(value);
         }
+        scanner.close();
         return column;
     }
 
-    public static List<Integer> substractColumnsAminusB(List<Integer> columnA, List<Integer> columnB) {
+    /** substractColumnsAminusB substracts the values of column B from the values
+     * of column A
+     */
+    public static List<Integer> substractColumnsAminusB(List<String> columnA, List<String> columnB) throws IllegalArgumentException{
         List<Integer> ranges = new ArrayList<>();
-        for (int i=0; i<columnA.size(); i++) {
-            ranges.add(columnA.get(i) - columnB.get(i));
+        try {
+            List<Integer> integerA = new ArrayList<>();
+            List<Integer> integerB = new ArrayList<>();
+            for (String s : columnA) {
+                integerA.add(Integer.parseInt(s));
+            }for (String s : columnB) {
+                integerB.add(Integer.parseInt(s));
+            }
+            for (int i=0; i<integerA.size(); i++) {
+                ranges.add(integerA.get(i) - integerB.get(i));
+            }
+        } catch (IllegalArgumentException e) {
+            e.getStackTrace();
         }
         return ranges;
     }
 
+    /** getMaxIndex returns the index of the biggest value in an integer array list
+     */
     public static int getMaxIndex(List<Integer> column) {
         int maxRange = Collections.max(column);
         return column.indexOf(maxRange);
     }
 
-    public static Scanner resetScanner(Scanner sc) {
-        Scanner newSc = sc.reset();
-        sc.close();
-        return newSc;
-    }
-
-    public static int getMaxDay(String path) throws FileNotFoundException {
+    /** getMaxDay returns the day with the largest temperature spread
+     */
+    public static String getMaxDay(String path) throws FileNotFoundException {
         Scanner sc = readCsvFile(path);
-        List<Integer> dayNumbers = getColumn(sc, 0);
+        List<String> dayNumbers = getColumn(sc, 0);
         sc = readCsvFile(path);
-        List<Integer> maxColumn = getColumn(sc, 1);
+        List<String> maxColumn = getColumn(sc, 1);
         sc = readCsvFile(path);
-        List<Integer> minColumn = getColumn(sc, 2);
+        List<String> minColumn = getColumn(sc, 2);
         sc.close();
         List<Integer> ranges = substractColumnsAminusB(maxColumn, minColumn);
         int maxDay = getMaxIndex(ranges);
