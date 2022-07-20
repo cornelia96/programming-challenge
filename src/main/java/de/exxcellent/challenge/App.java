@@ -18,47 +18,61 @@ public final class App {
      * This is the main entry method of your program.
      * @param args The CLI arguments passed
      */
-    public static void main(String... args) {
+    public static void main(String... args) throws FileNotFoundException {
 
         String path = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\weather.csv";
+        System.out.printf("Day with smallest temperature spread : %s%n", getMaxDay(path));
+    }
 
-        Scanner sc = null;
+    public static Scanner readCsvFile(String path) throws FileNotFoundException {
         try {
-            sc = new Scanner(new File(path));
+            return new Scanner(new File(path));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new FileNotFoundException("Unter dem angegeben Pfad konnte keine Datei gefunden werden");
         }
+    }
 
-        List<Integer> dayNumbers = new ArrayList<>();
-        List<Integer> ranges = new ArrayList<>();
-
+    public static List<Integer> getColumn(Scanner sc, int index) {
+        List<Integer> column = new ArrayList<>();
         sc.useDelimiter("\n");
+        sc.next();
         while (sc.hasNext()) {
-            List<Integer> day = new ArrayList<>();
-
-
-
-            for (String s : sc.next().split(",")) {
-                try {
-                    day.add(Integer.parseInt(s));
-                    int range = day.get(1) - day.get(2);
-                    ranges.add(range);
-                    dayNumbers.add(day.get(0));
-                } catch (IllegalArgumentException | IndexOutOfBoundsException ignored) {
-                }
-            }
+            int value = Integer.parseInt(sc.next().split(",")[index]);
+            column.add(value);
         }
+        return column;
+    }
 
-        int maxRange = Collections.max(ranges);
-        int maxId = ranges.indexOf(maxRange);
+    public static List<Integer> substractColumnsAminusB(List<Integer> columnA, List<Integer> columnB) {
+        List<Integer> ranges = new ArrayList<>();
+        for (int i=0; i<columnA.size(); i++) {
+            ranges.add(columnA.get(i) - columnB.get(i));
+        }
+        return ranges;
+    }
 
-        int maxDay = dayNumbers.get(maxId);
+    public static int getMaxIndex(List<Integer> column) {
+        int maxRange = Collections.max(column);
+        return column.indexOf(maxRange);
+    }
 
-    // Your day analysis function call …
-        System.out.printf("Day with smallest temperature spread : %s%n", maxDay);
+    public static Scanner resetScanner(Scanner sc) {
+        Scanner newSc = sc.reset();
+        sc.close();
+        return newSc;
+    }
 
-        String teamWithSmallestGoalSpread = "A good team"; // Your goal analysis function call …
-      //  System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
+    public static int getMaxDay(String path) throws FileNotFoundException {
+        Scanner sc = readCsvFile(path);
+        List<Integer> dayNumbers = getColumn(sc, 0);
+        sc = readCsvFile(path);
+        List<Integer> maxColumn = getColumn(sc, 1);
+        sc = readCsvFile(path);
+        List<Integer> minColumn = getColumn(sc, 2);
+        sc.close();
+        List<Integer> ranges = substractColumnsAminusB(maxColumn, minColumn);
+        int maxDay = getMaxIndex(ranges);
+        return dayNumbers.get(maxDay);
     }
 
 }
