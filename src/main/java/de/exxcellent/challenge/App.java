@@ -18,11 +18,13 @@ public final class App {
     public static void main(String... args) throws FileNotFoundException {
 
         String weatherPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\weather.csv";
+        String footballPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\football.csv";
+
 
         String dayWithSmallestTempSpread = getMaxDay(weatherPath);     // Your day analysis function call …
         System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
 
-        String teamWithSmallestGoalSpread = "A good team"; // Your goal analysis function call …
+        String teamWithSmallestGoalSpread = getMinGoalTeam(footballPath); // Your goal analysis function call …
         System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
     }
 
@@ -81,11 +83,18 @@ public final class App {
         return column.indexOf(maxRange);
     }
 
+    /** getMinIndex returns the index of the smallest value in an integer array list
+     */
+    public static int getMinIndex(List<Integer> column) {
+        int minRange = Collections.min(column);
+        return column.indexOf(minRange);
+    }
+
     /** getMaxDay returns the day with the largest temperature spread
      */
     public static String getMaxDay(String path) throws FileNotFoundException {
         Scanner sc = readCsvFile(path);
-        List<String> dayNumbers = getColumn(sc, 0);
+        List<String> infoColumn = getColumn(sc, 0);
         sc = readCsvFile(path);
         List<String> maxColumn = getColumn(sc, 1);
         sc = readCsvFile(path);
@@ -93,7 +102,24 @@ public final class App {
         sc.close();
         List<Integer> ranges = substractColumnsAminusB(maxColumn, minColumn);
         int maxDay = getMaxIndex(ranges);
-        return dayNumbers.get(maxDay);
+        return infoColumn.get(maxDay);
+    }
+
+    public static String getMinGoalTeam(String path) throws FileNotFoundException {
+        Scanner sc = readCsvFile(path);
+        List<String> infoColumn = getColumn(sc, 0);
+        sc = readCsvFile(path);
+        List<String> maxColumn = getColumn(sc, 6);
+        sc = readCsvFile(path);
+        List<String> minColumn = getColumn(sc, 5);
+        sc.close();
+        List<Integer> ranges = substractColumnsAminusB(maxColumn, minColumn);
+        List<Integer> absRanges = new ArrayList<>();
+        for (int value : ranges) {
+            absRanges.add(Math.abs(value));
+        }
+        int minTeam = getMinIndex(absRanges);
+        return infoColumn.get(minTeam);
     }
 
 }
