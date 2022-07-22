@@ -2,6 +2,7 @@ package de.exxcellent.challenge.challenges;
 
 import de.exxcellent.challenge.calculations.ColumnOperations;
 import de.exxcellent.challenge.interfaces.IReader;
+import de.exxcellent.challenge.interfaces.ITable;
 
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * The class Football describes the relevant data from the table from the file football.csv
  */
-public class Football {
+public class Football implements ITable {
     private final List<String> teams;
     private final List<Integer> goals;
     private final List<Integer> goalsAllowed;
@@ -28,10 +29,16 @@ public class Football {
      * getMaxDay returns a String of the day with the maximum temperature spread
      * (The spread itself is calculated in a helper class)
      */
-    public String getMinTeam() {
+    @Override
+    public String getMin() {
         List<Integer> spread = ColumnOperations.getSpreadOfTwoColumns(this.goals, this.goalsAllowed);
         int minIndex = spread.indexOf(Collections.min(spread));
         return this.teams.get(minIndex);
+    }
+
+    @Override
+    public String getMax() {
+        return null;
     }
 }
 

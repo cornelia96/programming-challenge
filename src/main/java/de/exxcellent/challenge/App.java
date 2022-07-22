@@ -2,6 +2,7 @@ package de.exxcellent.challenge;
 
 import de.exxcellent.challenge.challenges.Football;
 import de.exxcellent.challenge.challenges.Weather;
+import de.exxcellent.challenge.interfaces.ITable;
 import de.exxcellent.challenge.reader.CSVReader;
 
 import java.io. *;
@@ -24,13 +25,13 @@ public final class App {
         String footballPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\football.csv";
         Scanner sc = new Scanner(new File(weatherPath));
 
-        Weather weather = new Weather(new CSVReader(weatherPath));
-        Football football = new Football(new CSVReader(footballPath));
+        ITable weather = new Weather(new CSVReader(weatherPath));
+        ITable football = new Football(new CSVReader(footballPath));
 
-        String dayWithSmallestTempSpread = weather.getMaxDay();     // Your day analysis function call …
+        String dayWithSmallestTempSpread = weather.getMax();     // Your day analysis function call …
         System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
 
-        String teamWithSmallestGoalSpread = football.getMinTeam(); // Your goal analysis function call …
+        String teamWithSmallestGoalSpread = football.getMin(); // Your goal analysis function call …
         System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
     }
 
