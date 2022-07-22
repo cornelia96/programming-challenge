@@ -1,12 +1,14 @@
 package de.exxcellent.challenge.reader;
 
+import de.exxcellent.challenge.interfaces.IReader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class CSVReader {
+public class CSVReader implements IReader{
     private final String path;
     private Scanner sc;
 
@@ -21,6 +23,7 @@ public class CSVReader {
         this.sc = new Scanner(new File(path));
     }
 
+    @Override
     public List<Integer> returnIntegerColumnAsList(int index) throws FileNotFoundException {
         this.sc = new Scanner(new File(path));
         this.sc.useDelimiter("\n");
@@ -35,6 +38,7 @@ public class CSVReader {
         return values;
     }
 
+    @Override
     public List<String> returnStringColumnAsList(int index) {
         this.sc.useDelimiter("\n");
         this.sc.next();

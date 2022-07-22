@@ -22,7 +22,6 @@ public final class App {
     public static void main(String... args) throws FileNotFoundException {
         String weatherPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\weather.csv";
         String footballPath = "C:\\Users\\chipp\\IdeaProjects\\programming-challenge\\src\\main\\resources\\de\\exxcellent\\challenge\\football.csv";
-
         Scanner sc = new Scanner(new File(weatherPath));
 
         Weather weather = new Weather(new CSVReader(weatherPath));

@@ -1,7 +1,7 @@
 package de.exxcellent.challenge.challenges;
 
 import de.exxcellent.challenge.calculations.ColumnOperations;
-import de.exxcellent.challenge.reader.CSVReader;
+import de.exxcellent.challenge.interfaces.IReader;
 
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -18,7 +18,7 @@ public class Football {
     /**
      * The constructor adds the data from the relevant columns to list interfaces
      */
-    public Football(CSVReader reader) throws IllegalArgumentException, FileNotFoundException {
+    public Football(IReader reader) throws IllegalArgumentException, FileNotFoundException {
         this.teams = reader.returnStringColumnAsList(0);
         this.goals = reader.returnIntegerColumnAsList(5);
         this.goalsAllowed = reader.returnIntegerColumnAsList(6);

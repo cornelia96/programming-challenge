@@ -1,8 +1,7 @@
 package de.exxcellent.challenge.challenges;
 
 import de.exxcellent.challenge.calculations.ColumnOperations;
-import de.exxcellent.challenge.reader.CSVReader;
-
+import de.exxcellent.challenge.interfaces.IReader;
 
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -19,10 +18,10 @@ public class Weather {
     /**
      * The constructor adds the data from the relevant columns to list interfaces
      */
-    public Weather(CSVReader reader) throws IllegalArgumentException, FileNotFoundException {
+    public Weather(IReader reader) throws IllegalArgumentException, FileNotFoundException {
         this.days = reader.returnIntegerColumnAsList(0);
-        this.maxTemp = reader.returnIntegerColumnAsList(5);
-        this.minTemp = reader.returnIntegerColumnAsList(6);
+        this.maxTemp = reader.returnIntegerColumnAsList(1);
+        this.minTemp = reader.returnIntegerColumnAsList(2);
     }
 
     /**
